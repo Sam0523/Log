@@ -41,8 +41,8 @@ bool Log::Initialise( const std::string& fileName ) {
 
 	if( !log.m_initialised ) {
 		log.m_fileName = fileName;
-		log.m_stream.open( fileName.c_str(), 
-			std::ios_base::app | std::ios_base::out );
+		log.m_stream.open( fileName.c_str(),
+		    std::ios_base::app | std::ios_base::out );
 		log.m_initialised = true;
 		Info( "LOG INITIALISED" );
 		return true;
@@ -215,7 +215,7 @@ std::string Log::Peek() {
 /**
  * @brief   Pushes the function stack with the given message
  *
- * @param   input The message to store in the stack (typically the name of the 
+ * @param   input The message to store in the stack (typically the name of the
  *          function)
  * @return  True if the stack was successfully pushed
  */
@@ -251,8 +251,8 @@ void Log::PrintStackTrace() {
 	Log& log = Log::get();
 	std::string temp = "---Stack Trace---\n";
 
-	for( std::vector<std::string>::reverse_iterator i = log.m_stack.rbegin(); 
-			i != log.m_stack.rend(); ++i) {
+	for( std::vector<std::string>::reverse_iterator i = log.m_stack.rbegin();
+	        i != log.m_stack.rend(); ++i) {
 		temp += "| " + *i + "\n";
 	}
 
@@ -263,10 +263,10 @@ void Log::PrintStackTrace() {
  * @brief  Constructor
  */
 Log::Log()
-	: m_threshold( LOG_TYPE_INFO ),
-	  m_fileName(),
-	  m_stack(),
-	  m_stream() {
+    : m_threshold( LOG_TYPE_INFO ),
+      m_fileName(),
+      m_stack(),
+      m_stream() {
 }
 
 /**
@@ -313,20 +313,20 @@ void Log::write( const char* format, ... ) {
 
 /**
  * @brief   Logs the specified message with a timestamp and category prefix
- * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of 
+ * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of
  * characters required for the timestamp "[HH:MM:SS MM/DD/YY] ".
  *
  * @param   type The category of message to write based on the enum Log::Type
  * @param   message The message to be sent
  * @return  True if the log was successful
  */
-bool Log::log( const Type& type, const std::string& message ) {	
+bool Log::log( const Type& type, const std::string& message ) {
 	if( type <= m_threshold ) {
 		static const int TIMESTAMP_BUFFER_SIZE = 21;
 		char buffer[TIMESTAMP_BUFFER_SIZE];
 		time_t timestamp;
 		time( &timestamp );
-		strftime( buffer, sizeof( buffer ), "%X %x", localtime( &timestamp ) );
+		strftime( buffer, sizeof( buffer ), "%F %T", localtime( &timestamp ) );
 
 		write( "[%s] %s - %s", buffer, TypeToString( type ), message.c_str() );
 		return true;
@@ -336,7 +336,7 @@ bool Log::log( const Type& type, const std::string& message ) {
 
 /**
  * @brief   Logs the specified message with a timestamp and category prefix
- * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of 
+ * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of
  * characters required for the timestamp "[HH:MM:SS MM/DD/YY] ".
  *
  * @param   type The category of message to write based on the enum Log::Type
