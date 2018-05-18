@@ -1,10 +1,11 @@
 #include "../include/Log.h"
 
-int main() {
+int main()
+{
 	Log::Initialise("Example.txt");
 	Log::Debug("YOU SHOULDN'T BE ABLE TO READ THIS, THIS DOESN'T GET WRITTEN");
 
-	Log::SetThreshold( Log::LOG_TYPE_DEBUG );
+	Log::SetThreshold(Log::LOG_TYPE_DEBUG);
 
 	PUSH_LOG_STACK;
 

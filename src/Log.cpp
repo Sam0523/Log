@@ -12,8 +12,10 @@
  * @param   The enum value of the category
  * @return  The name of the category; returns the word UNKNOWN if not valid.
  */
-const char* Log::TypeToString( const Type& type ) {
-	switch( type ) {
+const char *Log::TypeToString(const Type &type)
+{
+	switch (type)
+	{
 	case LOG_TYPE_FATAL:
 		return "FATAL";
 	case LOG_TYPE_ERROR:
@@ -34,17 +36,20 @@ const char* Log::TypeToString( const Type& type ) {
  * @brief   Initialises the file stream
  *
  * @param   fileName The location of the file to create/append to
- * @return  True if the file was successfully initialised; false if already initialised
+ * @return  True if the file was successfully initialised; false if already
+ * initialised
  */
-bool Log::Initialise( const std::string& fileName ) {
-	Log& log = Log::get();
+bool Log::Initialise(const std::string &fileName)
+{
+	Log &log = Log::get();
 
-	if( !log.m_initialised ) {
+	if (!log.m_initialised)
+	{
 		log.m_fileName = fileName;
-		log.m_stream.open( fileName.c_str(),
-		    std::ios_base::app | std::ios_base::out );
+		log.m_stream.open(fileName.c_str(),
+		                  std::ios_base::app | std::ios_base::out);
 		log.m_initialised = true;
-		Info( "LOG INITIALISED" );
+		Info("LOG INITIALISED");
 		return true;
 	}
 	return false;
@@ -53,13 +58,16 @@ bool Log::Initialise( const std::string& fileName ) {
 /**
  * @brief   Finalises the file stream
  *
- * @return  True if the file was successfully finalised; false if not initialised
+ * @return  True if the file was successfully finalised; false if not
+ * initialised
  */
-bool Log::Finalise() {
-	Log& log = Log::get();
+bool Log::Finalise()
+{
+	Log &log = Log::get();
 
-	if( log.m_initialised ) {
-		Info( "LOG FINALISED" );
+	if (log.m_initialised)
+	{
+		Info("LOG FINALISED");
 		log.m_stream.close();
 		return true;
 	}
@@ -73,8 +81,9 @@ bool Log::Finalise() {
  *
  * @param  type The given debugging threshold to use
  */
-void Log::SetThreshold( const Type& type ) {
-	Log& log = Log::get();
+void Log::SetThreshold(const Type &type)
+{
+	Log &log        = Log::get();
 	log.m_threshold = type;
 }
 
@@ -84,8 +93,9 @@ void Log::SetThreshold( const Type& type ) {
  * @param   message The message to log
  * @return  True if the log was successful
  */
-bool Log::Fatal( const std::string& message ) {
-	return Log::get().log( LOG_TYPE_FATAL, message );
+bool Log::Fatal(const std::string &message)
+{
+	return Log::get().log(LOG_TYPE_FATAL, message);
 }
 
 /**
@@ -95,11 +105,12 @@ bool Log::Fatal( const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::Fatal( const char* format, ... ) {
+bool Log::Fatal(const char *format, ...)
+{
 	va_list varArgs;
-	va_start( varArgs, format );
-	bool success = Log::get().log( LOG_TYPE_FATAL, format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	bool success = Log::get().log(LOG_TYPE_FATAL, format, varArgs);
+	va_end(varArgs);
 	return success;
 }
 
@@ -109,8 +120,9 @@ bool Log::Fatal( const char* format, ... ) {
  * @param   message The message to log
  * @return  True if the log was successful
  */
-bool Log::Error( const std::string& message ) {
-	return Log::get().log( LOG_TYPE_ERROR, message );
+bool Log::Error(const std::string &message)
+{
+	return Log::get().log(LOG_TYPE_ERROR, message);
 }
 
 /**
@@ -120,11 +132,12 @@ bool Log::Error( const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::Error( const char* format, ... ) {
+bool Log::Error(const char *format, ...)
+{
 	va_list varArgs;
-	va_start( varArgs, format );
-	bool success = Log::get().log( LOG_TYPE_ERROR, format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	bool success = Log::get().log(LOG_TYPE_ERROR, format, varArgs);
+	va_end(varArgs);
 	return success;
 }
 
@@ -134,8 +147,9 @@ bool Log::Error( const char* format, ... ) {
  * @param   message The message to log
  * @return  True if the log was successful
  */
-bool Log::Warn( const std::string& message ) {
-	return Log::get().log( LOG_TYPE_WARN, message );
+bool Log::Warn(const std::string &message)
+{
+	return Log::get().log(LOG_TYPE_WARN, message);
 }
 
 /**
@@ -145,11 +159,12 @@ bool Log::Warn( const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::Warn( const char* format, ... ) {
+bool Log::Warn(const char *format, ...)
+{
 	va_list varArgs;
-	va_start( varArgs, format );
-	bool success = Log::get().log( LOG_TYPE_WARN, format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	bool success = Log::get().log(LOG_TYPE_WARN, format, varArgs);
+	va_end(varArgs);
 	return success;
 }
 
@@ -159,8 +174,9 @@ bool Log::Warn( const char* format, ... ) {
  * @param   message The message to log
  * @return  True if the log was successful
  */
-bool Log::Info( const std::string& message ) {
-	return Log::get().log( LOG_TYPE_INFO, message );
+bool Log::Info(const std::string &message)
+{
+	return Log::get().log(LOG_TYPE_INFO, message);
 }
 
 /**
@@ -170,11 +186,12 @@ bool Log::Info( const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::Info( const char* format, ... ) {
+bool Log::Info(const char *format, ...)
+{
 	va_list varArgs;
-	va_start( varArgs, format );
-	bool success = Log::get().log( LOG_TYPE_INFO, format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	bool success = Log::get().log(LOG_TYPE_INFO, format, varArgs);
+	va_end(varArgs);
 	return success;
 }
 
@@ -184,8 +201,9 @@ bool Log::Info( const char* format, ... ) {
  * @param   message The message to log
  * @return  True if the log was successful
  */
-bool Log::Debug( const std::string& message ) {
-	return Log::get().log( LOG_TYPE_DEBUG, message );
+bool Log::Debug(const std::string &message)
+{
+	return Log::get().log(LOG_TYPE_DEBUG, message);
 }
 
 /**
@@ -195,11 +213,12 @@ bool Log::Debug( const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::Debug( const char* format, ... ) {
+bool Log::Debug(const char *format, ...)
+{
 	va_list varArgs;
-	va_start( varArgs, format );
-	bool success = Log::get().log( LOG_TYPE_DEBUG, format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	bool success = Log::get().log(LOG_TYPE_DEBUG, format, varArgs);
+	va_end(varArgs);
 	return success;
 }
 
@@ -208,9 +227,7 @@ bool Log::Debug( const char* format, ... ) {
  *
  * @return  The top element of the function stack
  */
-std::string Log::Peek() {
-	return Log::get().m_stack.back();
-};
+std::string Log::Peek() { return Log::get().m_stack.back(); };
 
 /**
  * @brief   Pushes the function stack with the given message
@@ -219,10 +236,12 @@ std::string Log::Peek() {
  *          function)
  * @return  True if the stack was successfully pushed
  */
-bool Log::Push( const std::string& input ) {
-	if( !input.empty() ) {
-		Debug( input + " BEGIN" );
-		Log::get().m_stack.push_back( input );
+bool Log::Push(const std::string &input)
+{
+	if (!input.empty())
+	{
+		Debug(input + " BEGIN");
+		Log::get().m_stack.push_back(input);
 		return true;
 	}
 	return false;
@@ -233,12 +252,14 @@ bool Log::Push( const std::string& input ) {
  *
  * @return  The message just popped off the stack
  */
-std::string Log::Pop() {
-	Log& log = Log::get();
-	if( !log.m_stack.empty() ) {
-		std::string temp( log.Peek() );
+std::string Log::Pop()
+{
+	Log &log = Log::get();
+	if (!log.m_stack.empty())
+	{
+		std::string temp(log.Peek());
 		log.m_stack.pop_back();
-		Debug( temp + " END" );
+		Debug(temp + " END");
 		return temp;
 	}
 	return std::string();
@@ -247,47 +268,43 @@ std::string Log::Pop() {
 /**
  * @brief  Writes the stack to the log
  */
-void Log::PrintStackTrace() {
-	Log& log = Log::get();
+void Log::PrintStackTrace()
+{
+	Log &       log  = Log::get();
 	std::string temp = "---Stack Trace---\n";
 
-	for( std::vector<std::string>::reverse_iterator i = log.m_stack.rbegin();
-	        i != log.m_stack.rend(); ++i) {
+	for (std::vector<std::string>::reverse_iterator i = log.m_stack.rbegin();
+	     i != log.m_stack.rend();
+	     ++i)
+	{
 		temp += "| " + *i + "\n";
 	}
 
 	temp += "-----------------";
-	log.write( temp.c_str() );
+	log.write(temp.c_str());
 }
 /**
  * @brief  Constructor
  */
-Log::Log()
-    : m_threshold( LOG_TYPE_INFO ),
-      m_fileName(),
-      m_stack(),
-      m_stream() {
-}
+Log::Log() : m_threshold(LOG_TYPE_INFO), m_fileName(), m_stack(), m_stream() {}
 
 /**
  * @brief  Copy constructor
  * Kept private in order to preserve singleton
  */
-Log::Log(const Log&) {
-}
+Log::Log(const Log &) {}
 
 /**
  * @brief  Destructor
  * Logs the shut down then closes the file stream
  */
-Log::~Log() {
-	Finalise();
-}
+Log::~Log() { Finalise(); }
 
 /**
  * @brief  Get the singleton instance
  */
-Log& Log::get() {
+Log &Log::get()
+{
 	static Log log;
 	return log;
 }
@@ -298,18 +315,18 @@ Log& Log::get() {
  * @param  format The format of the message
  * @param  ... Variable arguments
  */
-void Log::write( const char* format, ... ) {
+void Log::write(const char *format, ...)
+{
 	char buffer[512];
 
 	va_list varArgs;
-	va_start( varArgs, format );
-	vsnprintf( buffer, sizeof(buffer), format, varArgs);
-	va_end( varArgs );
+	va_start(varArgs, format);
+	vsnprintf(buffer, sizeof(buffer), format, varArgs);
+	va_end(varArgs);
 
 	std::cout << buffer << std::endl;
-	m_stream  << buffer << std::endl;
+	m_stream << buffer << std::endl;
 }
-
 
 /**
  * @brief   Logs the specified message with a timestamp and category prefix
@@ -320,15 +337,17 @@ void Log::write( const char* format, ... ) {
  * @param   message The message to be sent
  * @return  True if the log was successful
  */
-bool Log::log( const Type& type, const std::string& message ) {
-	if( type <= m_threshold ) {
+bool Log::log(const Type &type, const std::string &message)
+{
+	if (type <= m_threshold)
+	{
 		static const int TIMESTAMP_BUFFER_SIZE = 21;
-		char buffer[TIMESTAMP_BUFFER_SIZE];
-		time_t timestamp;
-		time( &timestamp );
-		strftime( buffer, sizeof( buffer ), "%F %T", localtime( &timestamp ) );
+		char             buffer[TIMESTAMP_BUFFER_SIZE];
+		time_t           timestamp;
+		time(&timestamp);
+		strftime(buffer, sizeof(buffer), "%F %T", localtime(&timestamp));
 
-		write( "[%s] %s - %s", buffer, TypeToString( type ), message.c_str() );
+		write("[%s] %s - %s", buffer, TypeToString(type), message.c_str());
 		return true;
 	}
 	return false;
@@ -344,16 +363,15 @@ bool Log::log( const Type& type, const std::string& message ) {
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::log( const Type& type, const char* format, va_list& varArgs) {
+bool Log::log(const Type &type, const char *format, va_list &varArgs)
+{
 	char buffer[512];
-	vsnprintf( buffer, sizeof(buffer), format, varArgs);
-	return log( type, buffer );
+	vsnprintf(buffer, sizeof(buffer), format, varArgs);
+	return log(type, buffer);
 }
 
 /**
  * @brief  Copy operator
  * Kept private in order to preserve singleton
  */
-Log& Log::operator=(const Log&) {
-	return *this;
-}
+Log &Log::operator=(const Log &) { return *this; }

@@ -4,7 +4,7 @@ project(Log)
 
 set(SRCS src/Log.cpp)
 set(INCS include)
-set(CMAKE_CXX_FLAGS -Wall)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 
 include_directories(${INCS})
 
