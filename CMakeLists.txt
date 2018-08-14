@@ -4,7 +4,13 @@ project(Log)
 
 set(SRCS src/Log.cpp)
 set(INCS include)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+
+IF(MSVC)
+	add_compile_options("/W3")
+ELSE()
+	add_compile_options("-Wall -Wextra")
+ENDIF()
+
 
 include_directories(${INCS})
 
