@@ -8,7 +8,7 @@ set(INCS include)
 IF(MSVC)
 	add_compile_options("/W3")
 ELSE()
-	add_compile_options("-Wall -Wextra")
+	add_compile_options("-Wall" "-Wextra")
 ENDIF()
 
 
