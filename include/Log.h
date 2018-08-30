@@ -34,11 +34,11 @@ class Log
   public:
 	enum class Level
 	{
-		FATAL,
-		ERROR,
-		WARN,
-		INFO,
-		DEBUG,
+		Fatal,
+		Error,
+		Warn,
+		Info,
+		Debug,
 	};
 
 	static const char *LevelToString(const Level &level);

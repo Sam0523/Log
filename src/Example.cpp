@@ -5,7 +5,7 @@ int main()
 	Log::Initialise("Example.txt");
 	Log::Debug("YOU SHOULDN'T BE ABLE TO READ THIS, THIS DOESN'T GET WRITTEN");
 
-	Log::SetThreshold(Log::Level::DEBUG);
+	Log::SetThreshold(Log::Level::Debug);
 
 	PUSH_LOG_STACK;
 

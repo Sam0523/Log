@@ -17,15 +17,15 @@ const char *Log::LevelToString(const Level &level)
 {
 	switch (level)
 	{
-	case Level::FATAL:
+	case Level::Fatal:
 		return "FATAL";
-	case Level::ERROR:
+	case Level::Error:
 		return "ERROR";
-	case Level::WARN:
+	case Level::Warn:
 		return "WARN ";
-	case Level::INFO:
+	case Level::Info:
 		return "INFO ";
-	case Level::DEBUG:
+	case Level::Debug:
 		return "DEBUG";
 	default:
 		break;
@@ -96,7 +96,7 @@ void Log::SetThreshold(const Level &level)
  */
 bool Log::Fatal(const std::string &message)
 {
-	return Log::get().log(Level::FATAL, message);
+	return Log::get().log(Level::Fatal, message);
 }
 
 /**
@@ -110,7 +110,7 @@ bool Log::Fatal(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(Level::FATAL, format, varArgs);
+	bool success = Log::get().log(Level::Fatal, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -123,7 +123,7 @@ bool Log::Fatal(const char *format, ...)
  */
 bool Log::Error(const std::string &message)
 {
-	return Log::get().log(Level::ERROR, message);
+	return Log::get().log(Level::Error, message);
 }
 
 /**
@@ -137,7 +137,7 @@ bool Log::Error(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(Level::ERROR, format, varArgs);
+	bool success = Log::get().log(Level::Error, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -150,7 +150,7 @@ bool Log::Error(const char *format, ...)
  */
 bool Log::Warn(const std::string &message)
 {
-	return Log::get().log(Level::WARN, message);
+	return Log::get().log(Level::Warn, message);
 }
 
 /**
@@ -164,7 +164,7 @@ bool Log::Warn(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(Level::WARN, format, varArgs);
+	bool success = Log::get().log(Level::Warn, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -177,7 +177,7 @@ bool Log::Warn(const char *format, ...)
  */
 bool Log::Info(const std::string &message)
 {
-	return Log::get().log(Level::INFO, message);
+	return Log::get().log(Level::Info, message);
 }
 
 /**
@@ -191,7 +191,7 @@ bool Log::Info(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(Level::INFO, format, varArgs);
+	bool success = Log::get().log(Level::Info, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -204,7 +204,7 @@ bool Log::Info(const char *format, ...)
  */
 bool Log::Debug(const std::string &message)
 {
-	return Log::get().log(Level::DEBUG, message);
+	return Log::get().log(Level::Debug, message);
 }
 
 /**
@@ -218,7 +218,7 @@ bool Log::Debug(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(Level::DEBUG, format, varArgs);
+	bool success = Log::get().log(Level::Debug, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -287,7 +287,7 @@ void Log::PrintStackTrace()
 /**
  * @brief  Constructor
  */
-Log::Log() : m_threshold(Level::INFO), m_fileName(), m_stack(), m_stream() {}
+Log::Log() : m_threshold(Level::Info), m_fileName(), m_stack(), m_stream() {}
 
 /**
  * @brief  Copy constructor
