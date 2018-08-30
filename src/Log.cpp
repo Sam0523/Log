@@ -3,8 +3,9 @@
  */
 
 #include "Log.h"
-#include <ctime>
 #include <iostream>
+#include <ctime>
+#include <cstdarg>
 
 /**
  * @brief   Gets the name of the log category from the enum value
@@ -12,19 +13,19 @@
  * @param   The enum value of the category
  * @return  The name of the category; returns the word UNKNOWN if not valid.
  */
-const char *Log::TypeToString(const Type &type)
+const char *Log::LevelToString(const Level &level)
 {
-	switch (type)
+	switch (level)
 	{
-	case LOG_TYPE_FATAL:
+	case Level::FATAL:
 		return "FATAL";
-	case LOG_TYPE_ERROR:
+	case Level::ERROR:
 		return "ERROR";
-	case LOG_TYPE_WARN:
+	case Level::WARN:
 		return "WARN ";
-	case LOG_TYPE_INFO:
+	case Level::INFO:
 		return "INFO ";
-	case LOG_TYPE_DEBUG:
+	case Level::DEBUG:
 		return "DEBUG";
 	default:
 		break;
@@ -79,12 +80,12 @@ bool Log::Finalise()
  * This is the debugging threshold to use when reporting bugs, useful for having
  * lots of debugging information that sometimes you just want to turn off.
  *
- * @param  type The given debugging threshold to use
+ * @param  level The given debugging threshold to use
  */
-void Log::SetThreshold(const Type &type)
+void Log::SetThreshold(const Level &level)
 {
 	Log &log        = Log::get();
-	log.m_threshold = type;
+	log.m_threshold = level;
 }
 
 /**
@@ -95,7 +96,7 @@ void Log::SetThreshold(const Type &type)
  */
 bool Log::Fatal(const std::string &message)
 {
-	return Log::get().log(LOG_TYPE_FATAL, message);
+	return Log::get().log(Level::FATAL, message);
 }
 
 /**
@@ -109,7 +110,7 @@ bool Log::Fatal(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(LOG_TYPE_FATAL, format, varArgs);
+	bool success = Log::get().log(Level::FATAL, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -122,7 +123,7 @@ bool Log::Fatal(const char *format, ...)
  */
 bool Log::Error(const std::string &message)
 {
-	return Log::get().log(LOG_TYPE_ERROR, message);
+	return Log::get().log(Level::ERROR, message);
 }
 
 /**
@@ -136,7 +137,7 @@ bool Log::Error(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(LOG_TYPE_ERROR, format, varArgs);
+	bool success = Log::get().log(Level::ERROR, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -149,7 +150,7 @@ bool Log::Error(const char *format, ...)
  */
 bool Log::Warn(const std::string &message)
 {
-	return Log::get().log(LOG_TYPE_WARN, message);
+	return Log::get().log(Level::WARN, message);
 }
 
 /**
@@ -163,7 +164,7 @@ bool Log::Warn(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(LOG_TYPE_WARN, format, varArgs);
+	bool success = Log::get().log(Level::WARN, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -176,7 +177,7 @@ bool Log::Warn(const char *format, ...)
  */
 bool Log::Info(const std::string &message)
 {
-	return Log::get().log(LOG_TYPE_INFO, message);
+	return Log::get().log(Level::INFO, message);
 }
 
 /**
@@ -190,7 +191,7 @@ bool Log::Info(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(LOG_TYPE_INFO, format, varArgs);
+	bool success = Log::get().log(Level::INFO, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -203,7 +204,7 @@ bool Log::Info(const char *format, ...)
  */
 bool Log::Debug(const std::string &message)
 {
-	return Log::get().log(LOG_TYPE_DEBUG, message);
+	return Log::get().log(Level::DEBUG, message);
 }
 
 /**
@@ -217,7 +218,7 @@ bool Log::Debug(const char *format, ...)
 {
 	va_list varArgs;
 	va_start(varArgs, format);
-	bool success = Log::get().log(LOG_TYPE_DEBUG, format, varArgs);
+	bool success = Log::get().log(Level::DEBUG, format, varArgs);
 	va_end(varArgs);
 	return success;
 }
@@ -286,7 +287,7 @@ void Log::PrintStackTrace()
 /**
  * @brief  Constructor
  */
-Log::Log() : m_threshold(LOG_TYPE_INFO), m_fileName(), m_stack(), m_stream() {}
+Log::Log() : m_threshold(Level::INFO), m_fileName(), m_stack(), m_stream() {}
 
 /**
  * @brief  Copy constructor
@@ -333,13 +334,13 @@ void Log::write(const char *format, ...)
  * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of
  * characters required for the timestamp "[HH:MM:SS MM/DD/YY] ".
  *
- * @param   type The category of message to write based on the enum Log::Type
+ * @param   level The category of message to write based on the enum Log::Level
  * @param   message The message to be sent
  * @return  True if the log was successful
  */
-bool Log::log(const Type &type, const std::string &message)
+bool Log::log(const Level &level, const std::string &message)
 {
-	if (type <= m_threshold)
+	if (level <= m_threshold)
 	{
 		static const int TIMESTAMP_BUFFER_SIZE = 21;
 		char             buffer[TIMESTAMP_BUFFER_SIZE];
@@ -347,7 +348,7 @@ bool Log::log(const Type &type, const std::string &message)
 		time(&timestamp);
 		strftime(buffer, sizeof(buffer), "%F %T", localtime(&timestamp));
 
-		write("[%s] %s - %s", buffer, TypeToString(type), message.c_str());
+		write("[%s] %s - %s", buffer, LevelToString(level), message.c_str());
 		return true;
 	}
 	return false;
@@ -358,16 +359,16 @@ bool Log::log(const Type &type, const std::string &message)
  * The constant TIMESTAMP_BUFFER_SIZE was calculated as the maximum number of
  * characters required for the timestamp "[HH:MM:SS MM/DD/YY] ".
  *
- * @param   type The category of message to write based on the enum Log::Type
+ * @param   level The category of message to write based on the enum Log::Level
  * @param   format The format of the message
  * @param   ... Variable arguments
  * @return  True if the log was successful
  */
-bool Log::log(const Type &type, const char *format, va_list &varArgs)
+bool Log::log(const Level &level, const char *format, va_list &varArgs)
 {
 	char buffer[512];
 	vsnprintf(buffer, sizeof(buffer), format, varArgs);
-	return log(type, buffer);
+	return log(level, buffer);
 }
 
 /**

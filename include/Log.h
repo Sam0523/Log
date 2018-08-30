@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include <stdarg.h>
-
 /**
  * @def PUSH_LOG_STACK
  * @brief Pushes the logging stack with the function name that called it
@@ -34,21 +32,21 @@
 class Log
 {
   public:
-	enum Type
+	enum class Level
 	{
-		LOG_TYPE_FATAL,
-		LOG_TYPE_ERROR,
-		LOG_TYPE_WARN,
-		LOG_TYPE_INFO,
-		LOG_TYPE_DEBUG
+		FATAL,
+		ERROR,
+		WARN,
+		INFO,
+		DEBUG,
 	};
 
-	static const char *TypeToString(const Type &type);
+	static const char *LevelToString(const Level &level);
 
 	static bool Initialise(const std::string &fileName);
 	static bool Finalise();
 
-	static void SetThreshold(const Type &type);
+	static void SetThreshold(const Level &level);
 
 	static bool Fatal(const std::string &message);
 	static bool Fatal(const char *format, ...);
@@ -71,7 +69,7 @@ class Log
 	static void        PrintStackTrace();
 
   private:
-	Type                     m_threshold;
+	Level                    m_threshold;
 	bool                     m_initialised;
 	std::string              m_fileName;
 	std::vector<std::string> m_stack;
@@ -85,8 +83,8 @@ class Log
 
 	void write(const char *format, ...);
 
-	bool log(const Type &type, const std::string &message);
-	bool log(const Type &type, const char *format, va_list &varArgs);
+	bool log(const Level &level, const std::string &message);
+	bool log(const Level &level, const char *format, va_list &varArgs);
 
 	Log &operator=(const Log &);
 };
